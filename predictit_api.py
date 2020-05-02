@@ -2,7 +2,6 @@
 import json
 import requests
 import pandas as pd
-from benedict import benedict
 
 # pull in market data from PredictIt's API
 URL = "https://www.predictit.org/api/marketdata/all/"
