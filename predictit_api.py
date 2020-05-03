@@ -15,14 +15,14 @@ jsondata = response.json()
 #print(jsondata['markets'][10])
 
 # pull market IDs
-id = []
-for i in jsondata['markets']:
-	id.append(i.get('id'))
+#id = []
+#for i in jsondata['markets']:
+#	id.append(i.get('id'))
 
 # pul market names
-name = []
-for n in jsondata['markets']:
-	name.append(n.get('name'))
+#name = []
+#for n in jsondata['markets']:
+#	name.append(n.get('name'))
 
 # print contract to see data available
 #print(jsondata['markets'][0]['contracts'])
@@ -62,7 +62,11 @@ for p in jsondata['markets']:
 		data.append([p['id'],p['name'],k['id'],k['name'],k['bestBuyYesCost'],k['bestBuyNoCost']])
 
 df = pd.DataFrame(data)
+
+# Update dataframe column names
 df.columns=['Market ID','Market Name','Contract ID','Contract Name','Yes Price','No Price']
+
+# Add columns to identify correlated markets
 df['Trump Wins'] = 0
 df['Biden Wins'] = 0
 print(df)
