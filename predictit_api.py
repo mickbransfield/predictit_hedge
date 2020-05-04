@@ -3,7 +3,7 @@ import json
 import requests
 import pandas as pd
 import numpy as np
-import random
+from itertools import cycle
 
 # Pull in market data from PredictIt's API
 URL = "https://www.predictit.org/api/marketdata/all/"
@@ -75,13 +75,12 @@ Biden_Contracts['Biden_Loss'] = Biden_Contracts['Yes_Price']
 print(Trump_Contracts)
 print(Biden_Contracts)
 
-BL = np.array([Biden_Contracts['Biden_Loss']])
-TW = np.array([Trump_Contracts['Trump_Win_Profit']])
+BL = Biden_Contracts['Biden_Loss'].tolist()
+TW = Trump_Contracts['Trump_Win_Profit'].tolist()
 print(BL, type(BL))
 print(TW, type(TW))
 
-#d = []
-#for t in Trump_Contracts['Trump_Win_Profit']:
-#		Trump_Contracts['Trump_Win_Profit'] + Biden_Contracts['Biden_Loss']
-#x = pd.DataFrame(d)	
-#print(x)
+list=[]
+for x, y in [(x,y) for x in BL for y in TW]:
+    list.append([x, y])
+print(list)
