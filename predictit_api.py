@@ -1,42 +1,14 @@
-# import modules
+# Import modules
 import json
 import requests
 import pandas as pd
 
-# pull in market data from PredictIt's API
+# Pull in market data from PredictIt's API
 URL = "https://www.predictit.org/api/marketdata/all/"
 response = requests.get(URL)
 jsondata = response.json()
 
-# find data type (dictionary)
-#print(type(jsondata))
-
-# print individual market to see data available
-#print(jsondata['markets'][10])
-
-# pull market IDs
-#id = []
-#for i in jsondata['markets']:
-#	id.append(i.get('id'))
-
-# pul market names
-#name = []
-#for n in jsondata['markets']:
-#	name.append(n.get('name'))
-
-# print contract to see data available
-#print(jsondata['markets'][0]['contracts'])
-
-# Merge IDs and names into one dictionary
-#predictit_markets = dict(zip(id, name))
-
-# Convert dictionary into dataframe
-#predictit_markets = pd.DataFrame.from_dict(predictit_markets, orient='index', columns=['Market Name'])
-#predictit_markets['Trump Wins'] = 0
-#predictit_markets['Biden Wins'] = 0
-#print(predictit_markets)
-
-#Remove null values from data
+# Remove null values from data
 def dict_clean(items):
     result = {}
     for key, value in items:
@@ -59,14 +31,20 @@ jsondata = json.loads(dict_str, object_pairs_hook=dict_clean)
 data = []
 for p in jsondata['markets']:
 	for k in p['contracts']:
-		data.append([p['id'],p['name'],k['id'],k['name'],k['bestBuyYesCost'],k['bestBuyNoCost']])
+		data.append([p['id'],p['name'],p['status'],k['id'],k['name'],k['bestBuyYesCost'],k['bestBuyNoCost']])
 
+# Pandas dataframe named 'df'
 df = pd.DataFrame(data)
 
 # Update dataframe column names
-df.columns=['Market ID','Market Name','Contract ID','Contract Name','Yes Price','No Price']
+df.columns=['Market ID','Market Name','Market Status','Contract ID','Contract Name','Yes Price','No Price']
 
 # Add columns to identify correlated markets
 df['Trump Wins'] = 0
 df['Biden Wins'] = 0
+
+# Print dataframe
 print(df)
+
+# Write dataframe to CSV file in working directory
+df.to_csv(r'./predictit_markets.csv', sep=',', encoding='utf-8', header='true')
