@@ -1,4 +1,4 @@
-# predictit_hedge
+# PredictIt Hedge
 ### Hedge opportunities on PredictIt due to inefficient pricing in correlated markets
 
 There are situations for hedge betting in different PredictIt markets due to inefficient pricing related to the presidential election.
