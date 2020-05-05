@@ -2,15 +2,15 @@
 import json
 import requests
 import pandas as pd
+pd.options.mode.chained_assignment = None #hide SettingWithCopyWarning
 import numpy as np
-import math
 
 # Pull in market data from PredictIt's API
 URL = "https://www.predictit.org/api/marketdata/all/"
 response = requests.get(URL)
 jsondata = response.json()
 
-# Remove null values from data
+# Replace null values with zero
 def dict_clean(items):
     result = {}
     for key, value in items:
@@ -33,9 +33,6 @@ df = pd.DataFrame(data)
 # Update dataframe column names
 df.columns=['Market_ID','Market_Name','Contract_ID','Contract_Name','Yes_Price','No_Price']
 
-# Write dataframe to CSV file in working directory
-df.to_csv(r'./predictit_all_markets.csv', sep=',', encoding='utf-8', header='true')
-
 # Add columns to identify correlated markets
 df['Trump_Wins'] = 0
 df['Biden_Wins'] = 0
@@ -56,34 +53,29 @@ df['Biden_Wins'] = np.where(biden,1,0)
 Trump_Contracts = df.loc[df['Trump_Wins'] == 1]
 Biden_Contracts = df.loc[df['Biden_Wins'] == 1]
 
-# Cost-Benefit
-Trump_Contracts['Trump_Win_Gross'] = 1- Trump_Contracts['Yes_Price']
+# Cost-Benefit Trump contracts
+Trump_Contracts['Trump_Win_Gross'] = 1 - Trump_Contracts['Yes_Price']
 Trump_Contracts['Fees'] = 0.10 * Trump_Contracts['Trump_Win_Gross']
 Trump_Contracts['Trump_Win_Profit'] = Trump_Contracts['Trump_Win_Gross']-Trump_Contracts['Fees']
 Trump_Contracts['Trump_Loss'] = Trump_Contracts['Yes_Price']
 
-Biden_Contracts['Biden_Win_Gross'] = 1- Biden_Contracts['Yes_Price']
+# Cost-Benefit Biden contracts
+Biden_Contracts['Biden_Win_Gross'] = 1 - Biden_Contracts['Yes_Price']
 Biden_Contracts['Fees'] = 0.10 * Biden_Contracts['Biden_Win_Gross']
 Biden_Contracts['Biden_Win_Profit'] = Biden_Contracts['Biden_Win_Gross']-Biden_Contracts['Fees']
 Biden_Contracts['Biden_Loss'] = Biden_Contracts['Yes_Price']
-
-# Print dataframes
-print(Trump_Contracts)
-print(Biden_Contracts)
 
 # Create a list of net gain/loss for Trump victory & Biden loss
 Trump_Victory_Margins=[]
 for x, y in [(x,y) for x in Biden_Contracts['Biden_Loss'] for y in Trump_Contracts['Trump_Win_Profit']]:
     Trump_Victory_Margins.append([x, y])
 Trump_Victory_Margins = [tup[1]-tup[0] for tup in Trump_Victory_Margins]
-#print(Trump_Victory_Margins)
 
 # Create a list of net gain/loss for Biden victory & Trump loss
 Biden_Victory_Margins=[]
 for x, y in [(x,y) for x in Biden_Contracts['Biden_Win_Profit'] for y in Trump_Contracts['Trump_Loss']]:
     Biden_Victory_Margins.append([x, y])
 Biden_Victory_Margins = [tup[0]-tup[1] for tup in Biden_Victory_Margins]
-#print(Biden_Victory_Margins)
 
 # Create list of contract combinations 
 Combination_Contracts=[]
@@ -96,9 +88,14 @@ Results_df = pd.DataFrame(
 	'Biden_Victory_Margins': Biden_Victory_Margins,
 	'Combination_Contracts': Combination_Contracts
     })
-print(Results_df)
 
-
-
-
+# Print hedge opportunities if they exist
+records = Results_df[(Results_df['Trump_Victory_Margins'] > 0) & (Results_df['Biden_Victory_Margins'] > 0)]
+if records is None:
+	print("Sorry, no hedge investment opportunities at moment.")
+else:
+	print("Opportunity:",)
+	for index, row in records.iterrows():
+		print(row['Combination_Contracts'])
+	
 
