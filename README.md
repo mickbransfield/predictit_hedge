@@ -6,7 +6,7 @@ For example, when Trump winning is priced at $0.50/share and Biden winning is pr
 on both candidates and net a profit regardless of who wins.
 
 Naturally, there are a few qualifications:
-* This treats equivilant markets as equals, ie "Democratic candidate winning presidency" = "Biden winning presidency."
+* This treats similar markets as equals, ie "Democratic candidate winning presidency" = "Biden winning presidency."
 * The net gain is relatively small. The benefit is in using the hedge strategy with the intent on eventually selling off one candidate's shares.
 * Predicit limits max investments to $850 in any single market
 * While this model factors in the 10% fee on gains from trades, it does not factor in the 5% withdrawl fee.
