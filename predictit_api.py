@@ -3,7 +3,7 @@ import json
 import requests
 import pandas as pd
 import numpy as np
-from itertools import cycle
+import math
 
 # Pull in market data from PredictIt's API
 URL = "https://www.predictit.org/api/marketdata/all/"
@@ -67,20 +67,38 @@ Biden_Contracts['Fees'] = 0.10 * Biden_Contracts['Biden_Win_Gross']
 Biden_Contracts['Biden_Win_Profit'] = Biden_Contracts['Biden_Win_Gross']-Biden_Contracts['Fees']
 Biden_Contracts['Biden_Loss'] = Biden_Contracts['Yes_Price']
 
-# Round to 2 decimal places
-#Biden_Contracts['Fees']=Biden_Contracts['Fees'].apply(lambda x:round(x,2))
-#Biden_Contracts['Biden_Win_Profit']=Biden_Contracts['Biden_Win_Profit'].apply(lambda x:round(x,2))
-
 # Print dataframes
 print(Trump_Contracts)
 print(Biden_Contracts)
 
-BL = Biden_Contracts['Biden_Loss'].tolist()
-TW = Trump_Contracts['Trump_Win_Profit'].tolist()
-print(BL, type(BL))
-print(TW, type(TW))
+# Create a list of net gain/loss for Trump victory & Biden loss
+Trump_Victory_Margins=[]
+for x, y in [(x,y) for x in Biden_Contracts['Biden_Loss'] for y in Trump_Contracts['Trump_Win_Profit']]:
+    Trump_Victory_Margins.append([x, y])
+Trump_Victory_Margins = [tup[1]-tup[0] for tup in Trump_Victory_Margins]
+#print(Trump_Victory_Margins)
 
-list=[]
-for x, y in [(x,y) for x in BL for y in TW]:
-    list.append([x, y])
-print(list)
+# Create a list of net gain/loss for Biden victory & Trump loss
+Biden_Victory_Margins=[]
+for x, y in [(x,y) for x in Biden_Contracts['Biden_Win_Profit'] for y in Trump_Contracts['Trump_Loss']]:
+    Biden_Victory_Margins.append([x, y])
+Biden_Victory_Margins = [tup[0]-tup[1] for tup in Biden_Victory_Margins]
+#print(Biden_Victory_Margins)
+
+# Create list of contract combinations 
+Combination_Contracts=[]
+for x, y in [(x,y) for x in Biden_Contracts['Contract_Name'] for y in Trump_Contracts['Contract_Name']]:
+    Combination_Contracts.append([x, y])
+
+# Merge lists into dataframe
+Results_df = pd.DataFrame(
+    {'Trump_Victory_Margins': Trump_Victory_Margins,
+	'Biden_Victory_Margins': Biden_Victory_Margins,
+	'Combination_Contracts': Combination_Contracts
+    })
+print(Results_df)
+
+
+
+
+
