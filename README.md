@@ -11,24 +11,16 @@ Naturally, there are a few qualifications:
 * Predicit limits max investments to $850 in any single market
 * While this model factors in the 10% fee on gains from trades, it does not factor in the 5% withdrawl fee.
 
-Here's the basic math:
+Here's the basic math:  
+Trump Yes: $0.50  
+Biden Yes: $0.44  
 
-Trump Yes: $0.50
+Trump wins:  
+Gain = $1.00 - $0.50 = $0.50  
+Fee = $0.50 * 10% = $0.05  
+$0.50(gain) - $0.05(fee) - $0.44(Biden loss) = $0.01  
 
-Biden Yes: $0.44
-
-Trump wins:
-
-Gain = $1.00 - $0.50 = $0.50
-
-Fee = $0.50 * 10% = $0.05
-
-$0.50(gain) - $0.05(fee) - $0.44(Biden loss) = $0.01
-
-Biden wins:
-
-Gain = $1.00 - $0.44 = $0.56
-
-Fee = $.056 * 10% = $0.056
-
-$0.56(gain) - $0.056(fee) - $0.50(Trump loss) = $0.004
+Biden wins:  
+Gain = $1.00 - $0.44 = $0.56  
+Fee = $.056 * 10% = $0.056  
+$0.56(gain) - $0.056(fee) - $0.50(Trump loss) = $0.004  
