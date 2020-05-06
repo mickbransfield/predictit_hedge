@@ -18,9 +18,9 @@ Gain = $1.00 - $0.44 = $0.56
 Fee = $.056 * 10% = $0.056  
 $0.56(gain) - $0.056(fee) - $0.50(Trump loss) = $0.004  
 
-### Two separate programs are included:
-* [predictit_api.py](https://github.com/mauricebransfield/predictit_hedge/blob/master/predictit_api.py), looks for hedge opportunities in Trump/Biden contracts
-* [predictit_api_write_market_data.py](https://github.com/mauricebransfield/predictit_hedge/blob/master/predictit_api_write_market_data.py), writes to CSV current market and contract data in PredictIt
+### Two separate files:
+* [predictit_api.py](https://github.com/mauricebransfield/predictit_hedge/blob/master/predictit_api.py), looks for hedge opportunities in Trump/Biden contracts.
+* [predictit_api_write_market_data.py](https://github.com/mauricebransfield/predictit_hedge/blob/master/predictit_api_write_market_data.py), simpley writes to CSV the current market and contract prices in PredictIt.
 
 ### Naturally, there are a few qualifications:
 * Similar markets are treated as equals, ie 'Democratic candidate winning presidency' = 'Biden winning presidency.'
