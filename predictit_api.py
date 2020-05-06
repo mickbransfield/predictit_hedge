@@ -89,10 +89,11 @@ Results_df = pd.DataFrame(
 	'Combination_Contracts': Combination_Contracts
     })
 
-# Print hedge opportunities if they exist
+# Print correlated markets and hedge opportunities if they exist
+print(Results_df)
 records = Results_df[(Results_df['Trump_Victory_Margins'] > 0) & (Results_df['Biden_Victory_Margins'] > 0)]
 if records is None:
-	print("Sorry, no hedge investment opportunities at moment.")
+	print("Sorry, no hedge opportunities at moment.")
 else:
 	print("Opportunity:",)
 	for index, row in records.iterrows():
