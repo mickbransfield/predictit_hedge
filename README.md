@@ -2,7 +2,7 @@
 ### Hedge opportunities on PredictIt due to inefficient pricing in correlated markets
 
 There are situations for hedge betting in different PredictIt markets due to inefficient pricing related to the presidential election.
-For example, when Trump winning is priced at $0.50/share and Biden winning is priced at $0.44/share, the opportunity exists to bet equal amounts on both candidates and net a profit regardless of who wins.
+For example, when Trump winning is priced at $0.50/share and Biden winning is priced at $0.44/share, the opportunity exists to buy an equal number of shares for both candidates and net a profit regardless of who wins.
 
 ### Here's the basic math:  
 Trump Yes: $0.50  
