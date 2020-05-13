@@ -53,6 +53,10 @@ df['Biden_Wins'] = np.where(biden,1,0)
 Trump_Contracts = df.loc[df['Trump_Wins'] == 1]
 Biden_Contracts = df.loc[df['Biden_Wins'] == 1]
 
+# Create new column of Market/Contract names
+Trump_Contracts['market_contract'] = Trump_Contracts['Market_Name'] +': '+ Trump_Contracts['Contract_Name']
+Biden_Contracts['market_contract'] = Biden_Contracts['Market_Name'] +': '+ Biden_Contracts['Contract_Name']
+
 # Cost-Benefit Trump contracts
 Trump_Contracts['Trump_Win_Gross'] = 1 - Trump_Contracts['Yes_Price']
 Trump_Contracts['Fees'] = 0.10 * Trump_Contracts['Trump_Win_Gross']
@@ -79,7 +83,7 @@ Biden_Victory_Margins = [tup[0]-tup[1] for tup in Biden_Victory_Margins]
 
 # Create list of contract combinations 
 Combination_Contracts=[]
-for x, y in [(x,y) for x in Biden_Contracts['Contract_Name'] for y in Trump_Contracts['Contract_Name']]:
+for x, y in [(x,y) for x in Biden_Contracts['market_contract'] for y in Trump_Contracts['market_contract']]:
     Combination_Contracts.append([x, y])
 
 # Merge lists into dataframe
