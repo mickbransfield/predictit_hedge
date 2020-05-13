@@ -3,6 +3,9 @@ import json
 import requests
 import pandas as pd
 pd.options.mode.chained_assignment = None #hide SettingWithCopyWarning
+pd.set_option('display.max_columns', None) # Set it to None to display all columns in the dataframe
+pd.set_option('display.max_colwidth', -1) #  print contents of that column without truncated
+pd.set_option('display.width', None) # Width of the display in characters.
 import numpy as np
 
 # Pull in market data from PredictIt's API
