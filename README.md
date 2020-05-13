@@ -28,5 +28,4 @@ $0.56(gain) - $0.056(fee) - $0.50(Trump loss) = $0.004
 * PredictIt limits max investments to $850 in any single market
 * While this code accounts for the 10% fee on gains from trades, it does not factor in the 5% withdrawl fee.
 * The specific markets/contracts are hard coded to 2 contracts for Trump winning and 4 contracts for Biden winning.  
-* The output currently only lists contract names, in the event that hedge opportunities are identified.
 * The code currently only uses the 'Yes' contract prices. 
