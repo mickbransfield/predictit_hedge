@@ -53,24 +53,48 @@ biden = (df['Contract_ID']==4390) | (df['Contract_ID']==7940) | (df['Contract_ID
 df['Biden_Wins'] = np.where(biden,1,0)
 
 # Filter dataframe to correlated markets
-Trump_Contracts = df.loc[df['Trump_Wins'] == 1]
-Biden_Contracts = df.loc[df['Biden_Wins'] == 1]
+Trump_Contracts_Yes = df.loc[df['Trump_Wins'] == 1]
+Biden_Contracts_Yes = df.loc[df['Biden_Wins'] == 1]
+
+Trump_Contracts_No = df.loc[df['Trump_Wins'] == 1]
+Biden_Contracts_No = df.loc[df['Biden_Wins'] == 1]
 
 # Create new column of Market/Contract names
-Trump_Contracts['market_contract'] = Trump_Contracts['Market_Name'] +': '+ Trump_Contracts['Contract_Name'] +': Yes'
-Biden_Contracts['market_contract'] = Biden_Contracts['Market_Name'] +': '+ Biden_Contracts['Contract_Name'] +': Yes'
+Trump_Contracts_Yes['market_contract'] = Trump_Contracts_Yes['Market_Name'] +': '+ Trump_Contracts_Yes['Contract_Name'] +': Yes'
+Biden_Contracts_Yes['market_contract'] = Biden_Contracts_Yes['Market_Name'] +': '+ Biden_Contracts_Yes['Contract_Name'] +': Yes'
 
-# Cost-Benefit Trump contracts
-Trump_Contracts['Trump_Win_Gross'] = 1 - Trump_Contracts['Yes_Price']
-Trump_Contracts['Fees'] = 0.10 * Trump_Contracts['Trump_Win_Gross']
-Trump_Contracts['Trump_Win_Profit'] = Trump_Contracts['Trump_Win_Gross']-Trump_Contracts['Fees']
-Trump_Contracts['Trump_Loss'] = Trump_Contracts['Yes_Price']
+Trump_Contracts_No['market_contract'] = Trump_Contracts_No['Market_Name'] +': '+ Trump_Contracts_No['Contract_Name'] +': No'
+Biden_Contracts_No['market_contract'] = Biden_Contracts_No['Market_Name'] +': '+ Biden_Contracts_No['Contract_Name'] +': No'
 
-# Cost-Benefit Biden contracts
-Biden_Contracts['Biden_Win_Gross'] = 1 - Biden_Contracts['Yes_Price']
-Biden_Contracts['Fees'] = 0.10 * Biden_Contracts['Biden_Win_Gross']
-Biden_Contracts['Biden_Win_Profit'] = Biden_Contracts['Biden_Win_Gross']-Biden_Contracts['Fees']
-Biden_Contracts['Biden_Loss'] = Biden_Contracts['Yes_Price']
+# Cost-Benefit Trump YES contracts
+Trump_Contracts_Yes['Trump_Win_Gross'] = 1 - Trump_Contracts_Yes['Yes_Price']
+Trump_Contracts_Yes['Fees'] = 0.10 * Trump_Contracts_Yes['Trump_Win_Gross']
+Trump_Contracts_Yes['Trump_Win_Profit'] = Trump_Contracts_Yes['Trump_Win_Gross']-Trump_Contracts_Yes['Fees']
+Trump_Contracts_Yes['Trump_Loss'] = Trump_Contracts_Yes['Yes_Price']
+
+# Cost-Benefit Biden NO contracts
+Biden_Contracts_No['Trump_Win_Gross'] = 1 - Biden_Contracts_No['No_Price']
+Biden_Contracts_No['Fees'] = 0.10 * Biden_Contracts_No['Trump_Win_Gross']
+Biden_Contracts_No['Trump_Win_Profit'] = Biden_Contracts_No['Trump_Win_Gross']-Biden_Contracts_No['Fees']
+Biden_Contracts_No['Trump_Loss'] = Biden_Contracts_No['No_Price']
+
+# Cost-Benefit Biden YES contracts
+Biden_Contracts_Yes['Biden_Win_Gross'] = 1 - Biden_Contracts_Yes['Yes_Price']
+Biden_Contracts_Yes['Fees'] = 0.10 * Biden_Contracts_Yes['Biden_Win_Gross']
+Biden_Contracts_Yes['Biden_Win_Profit'] = Biden_Contracts_Yes['Biden_Win_Gross']-Biden_Contracts_Yes['Fees']
+Biden_Contracts_Yes['Biden_Loss'] = Biden_Contracts_Yes['Yes_Price']
+
+# Cost-Benefit Trump NO contracts
+Trump_Contracts_No['Biden_Win_Gross'] = 1 - Trump_Contracts_No['No_Price']
+Trump_Contracts_No['Fees'] = 0.10 * Trump_Contracts_No['Biden_Win_Gross']
+Trump_Contracts_No['Biden_Win_Profit'] = Trump_Contracts_No['Biden_Win_Gross']-Trump_Contracts_No['Fees']
+Trump_Contracts_No['Biden_Loss'] = Trump_Contracts_No['No_Price']
+
+# Concatenate Trump Yes & Biden No
+Trump_Contracts = pd.concat([Trump_Contracts_Yes, Biden_Contracts_No], axis=0)
+
+# Concatenate Biden Yes & Trump No
+Biden_Contracts = pd.concat([Biden_Contracts_Yes, Trump_Contracts_No], axis=0)
 
 # Create a list of net gain/loss for Trump victory & Biden loss
 Trump_Victory_Margins=[]
@@ -89,21 +113,26 @@ Combination_Contracts=[]
 for x, y in [(x,y) for x in Biden_Contracts['market_contract'] for y in Trump_Contracts['market_contract']]:
     Combination_Contracts.append([x, y])
 
+Contract_IDs=[]
+for x, y in [(x,y) for x in Biden_Contracts['Contract_ID'] for y in Trump_Contracts['Contract_ID']]:
+    Contract_IDs.append(x-y)
+
 # Merge lists into dataframe
 Results_df = pd.DataFrame(
     {'Trump_Victory_Margins': Trump_Victory_Margins,
 	'Biden_Victory_Margins': Biden_Victory_Margins,
-	'Combination_Contracts': Combination_Contracts
+	'Combination_Contracts': Combination_Contracts,
+	'Contract_IDs': Contract_IDs
     })
 
-# Print correlated markets and hedge opportunities if they exist
-print(Results_df)
-records = Results_df[(Results_df['Trump_Victory_Margins'] > 0) & (Results_df['Biden_Victory_Margins'] > 0)]
+# Remove Yes/No contracts since user can't buy Yes and No on same contract
+Results_df = Results_df[(Results_df['Contract_IDs'] != 0)]
+
+# Print hedge opportunities if they exist
+records = Results_df[(Results_df['Trump_Victory_Margins'] > 0) & (Results_df['Biden_Victory_Margins'] > 0)& (Results_df['Contract_IDs'] != 0)]
 if records is None:
 	print("Sorry, no hedge opportunities at moment.")
 else:
-	print("Opportunity:",)
+	print("Hedge opportunity:",)
 	for index, row in records.iterrows():
 		print(row['Combination_Contracts'])
-	
-

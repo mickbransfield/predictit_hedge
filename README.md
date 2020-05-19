@@ -24,8 +24,5 @@ $0.56(gain) - $0.056(fee) - $0.50(Trump loss) = $0.004
 
 ### Naturally, there are a few qualifications:
 * Similar markets are treated as equals, ie 'Democratic candidate winning presidency' = 'Biden winning presidency.'
-* The net gain is relatively small. The benefit is in using the hedge strategy with the intent on eventually selling off one candidate's shares.
-* PredictIt limits max investments to $850 in any single market
 * While this code accounts for the 10% fee on gains from trades, it does not factor in the 5% withdrawl fee.
-* The specific markets/contracts are hard coded to 2 contracts for Trump winning and 4 contracts for Biden winning.  
-* The code currently only uses the 'Yes' contract prices. 
+* The specific markets/contracts are hard coded to Yes& No prices of 2 contracts for Trump winning and 4 contracts for Biden winning.
