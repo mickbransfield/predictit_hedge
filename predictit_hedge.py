@@ -57,8 +57,8 @@ Trump_Contracts = df.loc[df['Trump_Wins'] == 1]
 Biden_Contracts = df.loc[df['Biden_Wins'] == 1]
 
 # Create new column of Market/Contract names
-Trump_Contracts['market_contract'] = Trump_Contracts['Market_Name'] +': '+ Trump_Contracts['Contract_Name']
-Biden_Contracts['market_contract'] = Biden_Contracts['Market_Name'] +': '+ Biden_Contracts['Contract_Name']
+Trump_Contracts['market_contract'] = Trump_Contracts['Market_Name'] +': '+ Trump_Contracts['Contract_Name'] +': Yes'
+Biden_Contracts['market_contract'] = Biden_Contracts['Market_Name'] +': '+ Biden_Contracts['Contract_Name'] +': Yes'
 
 # Cost-Benefit Trump contracts
 Trump_Contracts['Trump_Win_Gross'] = 1 - Trump_Contracts['Yes_Price']
