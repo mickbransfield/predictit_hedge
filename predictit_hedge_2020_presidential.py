@@ -130,7 +130,7 @@ Results_df = Results_df[(Results_df['Contract_IDs'] != 0)]
 
 # Print hedge opportunities if they exist
 records = Results_df[(Results_df['Trump_Victory_Margins'] > 0) & (Results_df['Biden_Victory_Margins'] > 0)& (Results_df['Contract_IDs'] != 0)]
-if records is None:
+if records.empty:
 	print("Sorry, no hedge opportunities at moment.")
 else:
 	print("Hedge opportunity:",)

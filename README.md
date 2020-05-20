@@ -25,4 +25,4 @@ $0.56(gain) - $0.056(fee) - $0.50(Trump loss) = $0.004
 ### Naturally, there are a few qualifications:
 * Similar markets are treated as equals, ie 'Democratic candidate winning presidency' = 'Biden winning presidency.'
 * While this code accounts for the 10% fee on gains from trades, it does not factor in the 5% withdrawl fee.
-* The specific markets/contracts are hard coded to Yes& No prices of 2 contracts for Trump winning and 4 contracts for Biden winning.
+* The specific markets/contracts are hard coded to Yes & No prices of 2 contracts for Trump winning and 4 contracts for Biden winning.
