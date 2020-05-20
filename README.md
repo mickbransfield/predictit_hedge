@@ -20,6 +20,7 @@ $0.56(gain) - $0.056(fee) - $0.50(Trump loss) = $0.004
 
 ### Two separate files:
 * [predictit_hedge_2020_presidential.py](https://github.com/mauricebransfield/predictit_hedge/blob/master/predictit_hedge_2020_presidential.py), looks for hedge opportunities in Trump and Biden-related contracts.
+* [predictit_hedge.py](https://github.com/mauricebransfield/predictit_hedge/blob/master/predictit_hedge.py), looks for hedge opportunites in user inputed contracts.
 * [predictit_api_write_market_data.py](https://github.com/mauricebransfield/predictit_hedge/blob/master/predictit_api_write_market_data.py), simply writes to CSV the current market and contract prices in PredictIt.
 
 ### Naturally, there are a few qualifications:
