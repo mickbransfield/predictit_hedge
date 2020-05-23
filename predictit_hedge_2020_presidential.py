@@ -49,7 +49,8 @@ df['Trump_Wins'] = np.where(trump,1,0)
 # Market 3698 Who will win the 2020 U.S. presidential election? Contract 7940 Joe Biden
 # Market 5960 Will the 2020 SC Democratic primary winner win the presidency? Contract 18036 Will the 2020 SC Democratic primary winner win the presidency?
 # Market 5963 Will the 2020 MA Democratic primary winner win the presidency? Contract 18039 Will the 2020 MA Democratic primary winner win the presidency?
-biden = (df['Contract_ID']==4390) | (df['Contract_ID']==7940) | (df['Contract_ID']==18036) | (df['Contract_ID']==18039) 
+# Market 5961 Will the 2020 TX Democratic primary winner win the presidency? Contract 18037 Will the 2020 TX Democratic primary winner win the presidency?
+biden = (df['Contract_ID']==4390) | (df['Contract_ID']==7940) | (df['Contract_ID']==18036) | (df['Contract_ID']==18039) | (df['Contract_ID']==18037)
 df['Biden_Wins'] = np.where(biden,1,0)
 
 # Filter dataframe to correlated markets
@@ -131,8 +132,8 @@ Results_df = Results_df[(Results_df['Contract_IDs'] != 0)]
 # Print hedge opportunities if they exist
 records = Results_df[(Results_df['Trump_Victory_Margins'] > 0) & (Results_df['Biden_Victory_Margins'] > 0)& (Results_df['Contract_IDs'] != 0)]
 if records.empty:
-	print("Sorry, no hedge opportunities at moment.")
+	print("Sorry, no opportunities for pairs trading in the presidential markets at moment.")
 else:
-	print("Hedge opportunity:",)
+	print("Pairs trading opportunity:",)
 	for index, row in records.iterrows():
 		print(row['Combination_Contracts'])

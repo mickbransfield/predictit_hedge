@@ -41,7 +41,7 @@ df['Group_A'] = 0
 df['Group_B'] = 0
 
 # Brief user instructions
-print("Enter different correlated contracts in the prompts. For example, 'Group A' could be contracts of Trump winning the General Election and 'Group B' Biden winning.\n\nIf you use multiple contracts per group, separate with a comma.") 
+print("Enter inversely correlated contracts in the prompts. For example, 'Group A' could be contracts of Trump winning the General Election and 'Group B' Biden winning.\n\nIf you use multiple contracts per group, separate with a comma.\n") 
 
 # Add 1 to Group_A column for contracts from user input
 # Example: 4389,7943
@@ -133,8 +133,8 @@ Results_df = Results_df[(Results_df['Contract_IDs'] != 0)]
 records = Results_df[(Results_df['Group_A_Victory_Margins'] > 0) & (Results_df['Group_B_Victory_Margins'] > 0)& (Results_df['Contract_IDs'] != 0)]
 
 if records.empty:
-	print("Sorry, no hedge opportunities at moment.")
+	print("Sorry, no opportunities at moment for pairs trading in the contracts you selected.")
 else:
-	print("Hedge opportunity:",)
+	print("Pairs trading opportunity:",)
 	for index, row in records.iterrows():
 		print(row['Combination_Contracts'])
