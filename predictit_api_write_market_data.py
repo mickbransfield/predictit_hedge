@@ -23,13 +23,13 @@ jsondata = json.loads(dict_str, object_pairs_hook=dict_clean)
 data = []
 for p in jsondata['markets']:
 	for k in p['contracts']:
-		data.append([p['id'],p['name'],p['url'],k['id'],k['name'],k['bestBuyYesCost'],k['bestBuyNoCost'],p['timeStamp']])
+		data.append([p['id'],p['name'],p['url'],k['id'],k['name'],k['bestBuyYesCost'],k['bestBuyNoCost'],k['bestSellYesCost'],k['bestSellNoCost'],p['timeStamp'],p['status']])
 
 # Pandas dataframe named 'df'
 df = pd.DataFrame(data)
 
 # Update dataframe column names
-df.columns=['Market_ID','Market_Name','Market_URL','Contract_ID','Contract_Name','Yes_Price','No_Price','Time_Stamp']
+df.columns=['Market_ID','Market_Name','Market_URL','Contract_ID','Contract_Name','bestBuyYesCost','bestBuyNoCost','BestSellYesCost','BestSellNoCost','Time_Stamp','Status']
 
 # Write dataframe to CSV file in working directory
 df.to_csv(r'./predictit_all_markets.csv', sep=',', encoding='utf-8', header='true')
