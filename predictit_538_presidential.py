@@ -138,9 +138,7 @@ df = pd.merge(df, recent_pres_polling, on=['race_id', 'answer'])
 
 # Merge key and PredicitIt
 df = pd.merge(df, predictit_df, on=['Contract_ID'])
-
-#Placeholder: add column of difference in PredictIt price  & latest 538 poll
-df['recent_poll-predictit'] = df['pct'] - df['bestBuyYesCost']*100
+#df['recent_poll-predictit'] = df['pct'] - df['bestBuyYesCost']*100
 
 #print out select columns
-print(df[['state', 'answer', 'pct', 'bestBuyYesCost', 'recent_poll-predictit']])
+print(df[['state', 'answer', 'pct', 'bestBuyYesCost']])
