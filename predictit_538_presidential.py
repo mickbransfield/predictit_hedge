@@ -133,12 +133,73 @@ pres_polling['created_at'] = pd.to_datetime(pres_polling['created_at']) #convert
 recent_pres_polling = pres_polling.sort_values(by=['created_at']).drop_duplicates(['state', 'candidate_name'], keep='last')
 recent_pres_polling = recent_pres_polling[recent_pres_polling['answer'].isin(['Biden', 'Trump'])]
 
+# import bookies.com html
+url = 'https://bookies.com/news/swing-state-election-odds'
+r = requests.get(url)
+r.status_code
+
+# convert to pandas
+tables = pd.read_html(r.text)
+
+# delete extraneous table #3
+del tables[2]
+
+# strip asterix from state names
+tables[0]['State'] = tables[0]['State'].str.replace(r'[^\w\s]+', '')
+tables[1]['State'] = tables[1]['State'].str.replace(r'[^\w\s]+', '')
+
+# Rename columns
+tables[0] = tables[0].rename(columns={'State':'state','Favorite':'Biden_odds', "Underdog": "Trump_odds"})
+tables[1] = tables[1].rename(columns={'State': 'state','Favorite': 'Trump_odds', 'Underdog': 'Biden_odds'})
+
+# Combine 2 dataframes
+frames = [tables[0], tables[1]]
+bookies_df = pd.concat(frames)
+
+# Remove text and punctuation from moneyline columns
+bookies_df['Trump_odds'] = bookies_df['Trump_odds'].str.replace(r'Republicans ', '')
+bookies_df['Biden_odds'] = bookies_df['Biden_odds'].str.replace(r'Democrats ', '')
+bookies_df = bookies_df.replace(to_replace='\(', value="", regex=True)
+bookies_df = bookies_df.replace(to_replace='\)', value="", regex=True)
+
+# split dataframe
+trump_bookies_df = bookies_df[['Trump_odds', 'state']].copy()
+trump_bookies_df['answer'] = 'Trump'
+biden_bookies_df = bookies_df[['Biden_odds', 'state']].copy()
+biden_bookies_df['answer'] = 'Biden'
+
+trump_bookies_df = trump_bookies_df.rename(columns={'Trump_odds': 'odds'})
+biden_bookies_df = biden_bookies_df.rename(columns={'Biden_odds': 'odds'})
+frames2 = [trump_bookies_df, biden_bookies_df]
+bookies_df = pd.concat(frames2)
+
+# Implied probability of moneyline odds
+# https://www.bettingexpert.com/academy/advanced-betting-theory/odds-conversion-to-percentage#gref
+
+# Negative number (favorite) -120
+#Implied probability	=	(- (-120) / ((- (-120)) + 100)
+#Implied probability	=	120 / (120 + 100)
+#Implied probability	=	120 / 220
+#Implied probability	=	0.545
+
+# Positive number (underdog) +180
+#Implied probability	=	100 / (180 + 100)
+#Implied probability	=	100 / 280
+#Implied probability	=	0.357
+
+
+
+
+
+
 # Merge key and 538 dataframes together
 df = pd.merge(df, recent_pres_polling, on=['race_id', 'answer'])
 
 # Merge key and PredicitIt
 df = pd.merge(df, predictit_df, on=['Contract_ID'])
-#df['recent_poll-predictit'] = df['pct'] - df['bestBuyYesCost']*100
+
+# Merge df and trump odds
+df = pd.merge(df, bookies_df, on=['state', 'answer'], how='left')
 
 #print out select columns
-print(df[['state', 'answer', 'pct', 'bestBuyYesCost']])
+print(df[['state', 'answer', 'pct', 'bestBuyYesCost', 'odds']])
