@@ -39,10 +39,10 @@ states = [[6212, 'Biden', 22223],   #AL
         [6228, 'Trump', 22095], #KY
         [6232, 'Biden', 22032], #ME
         [6232, 'Trump', 22031], #ME
-        #[8422, 'Biden', ], #ME CD-1
-        #[8422, 'Trump', ], #ME CD-1
-        #[8423, 'Biden', ], #ME CD-2
-        #[8423, 'Trump', ], #ME CD-2
+        [8422, 'Biden', 22291], #ME CD-1
+        [8422, 'Trump', 22290], #ME CD-1
+        [8423, 'Biden', 19490], #ME CD-2
+        [8423, 'Trump', 19489], #ME CD-2
         [6231, 'Biden', 22098], #MD
         [6231, 'Trump', 22097], #MD
         [6230, 'Biden', 22110], #MA
@@ -57,8 +57,8 @@ states = [[6212, 'Biden', 22223],   #AL
         [6235, 'Trump', 22062], #MO
         [6237, 'Biden', 22127], #MT
         [6237, 'Trump', 22126], #MT
-        #[8718, 'Biden', ], #NE CD-2
-        #[8718, 'Trump', ], #NE CD-2
+        [8718, 'Biden', 22138], #NE CD-2
+        [8718, 'Trump', 22137], #NE CD-2
         [6244, 'Biden', 16010], #NV
         [6244, 'Trump', 16009], #NV
         [6241, 'Biden', 16004], #NH
