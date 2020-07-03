@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 pd.options.mode.chained_assignment = None #hide SettingWithCopyWarning
 pd.set_option('display.max_columns', None) # Set it to None to display all columns in the dataframe
-pd.set_option('display.max_colwidth', -1) #  print contents of that column without truncated
+pd.set_option('display.max_colwidth', None) #  print contents of that column without truncated
 pd.set_option('display.width', None) # Width of the display in characters.
 
 
@@ -20,6 +20,7 @@ senate_candidates = [[6272, 'Greenfield', 22293],
 					[6292, 'Harrison', 22700],
 					[6292, 'Graham', 22699],   
 					[6279, 'Collins', 17022],
+					[6279, 'Gideon', 17023],
 					[6269, 'Hickenlooper', 17021],
 					[6269, 'Gardner', 17020],
 					[6283, 'Bullock', 22014],
