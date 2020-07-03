@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 pd.options.mode.chained_assignment = None #hide SettingWithCopyWarning
 pd.set_option('display.max_columns', None) # Set it to None to display all columns in the dataframe
-pd.set_option('display.max_colwidth', -1) #  print contents of that column without truncated
+pd.set_option('display.max_colwidth', None) #  print contents of that column without truncated
 pd.set_option('display.width', None) # Width of the display in characters.
 
 # Pull in market data from PredictIt's API
@@ -40,11 +40,12 @@ df1 = df.groupby('Market_Name')['Market_ID'].value_counts().reset_index(name ='c
 df1 = df1.loc[df1['contract_counts'] == 2]
 Markets_Dual_contracts_list = df1['Market_ID'].tolist()
 Markets_Dual_contracts_df = df[df['Market_ID'].isin(Markets_Dual_contracts_list)]
-
+print(Markets_Dual_contracts_df)
 # Find inefficiencies in Buy Yes and Buy No prices of inversely correlated contracts
 Markets_Dual_contracts_df['interval_AYes_BNo'] = (Markets_Dual_contracts_df.groupby('Market_ID').apply(lambda x: x.bestBuyYesCost-x.bestBuyNoCost.shift(1))).values
 Markets_Dual_contracts_df['interval_ANo_BYes'] = (Markets_Dual_contracts_df.groupby('Market_ID').apply(lambda x: x.bestBuyNoCost-x.bestBuyYesCost.shift(1))).values
-
+print(Markets_Dual_contracts_df['interval_AYes_BNo'])
+print(Markets_Dual_contracts_df['interval_ANo_BYes'])
 # Remove alternating NaN rows
 Markets_Dual_contracts_df = Markets_Dual_contracts_df.dropna(subset=['interval_AYes_BNo'])
 

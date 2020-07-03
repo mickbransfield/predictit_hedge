@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 pd.options.mode.chained_assignment = None #hide SettingWithCopyWarning
 pd.set_option('display.max_columns', None) # Set it to None to display all columns in the dataframe
-pd.set_option('display.max_colwidth', -1) #  print contents of that column without truncated
+pd.set_option('display.max_colwidth', None) #  print contents of that column without truncated
 pd.set_option('display.width', None) # Width of the display in characters.
 import numpy as np
 
@@ -133,7 +133,7 @@ Results_df = Results_df[(Results_df['Contract_IDs'] != 0)]
 records = Results_df[(Results_df['Group_A_Victory_Margins'] > 0) & (Results_df['Group_B_Victory_Margins'] > 0)& (Results_df['Contract_IDs'] != 0)]
 
 if records.empty:
-	print("Sorry, no opportunities at moment for pairs trading in the contracts you selected.")
+	print("Sorry, no opportunities right now for pairs trading in the contracts you selected.")
 else:
 	print("Pairs trading opportunity:",)
 	for index, row in records.iterrows():
